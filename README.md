@@ -16,11 +16,11 @@ The way to do this is to do the following:
 
 The CDS file is huge, and while it is possible to write some SAX to run through the file to retrieve the right data, the benefit of the CDS format is arranged in such a way that all of the geographical areas are in one place in the XML extract, between these two nodes:
 
-`<findGeographicalAreaByDatesResponse>
+`<findGeographicalAreaByDatesResponse>`
 
-...
+`...`
 
-</findGeographicalAreaByDatesResponse>`
+`</findGeographicalAreaByDatesResponse>`
 
 ## Steps
 
