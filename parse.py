@@ -1,14 +1,18 @@
 from lxml import etree
 import xml.etree.ElementTree as ET
-import os
+import os, sys
 
 
 def parseXML(xmlFile):
     tree = ET.parse(xmlFile)
     root = tree.getroot()
+    cwd = os.getcwd()
+    output_folder = os.path.join(cwd, "export")
+    geo_file = os.path.join(output_folder, "hjid_to_sid_map.txt")
+    geo_member_file = os.path.join(output_folder, "hjid_member_map.txt")
 
-    f = open("hjid_to_sid_map.txt", "w+")
-    f2 = open("hjid_member_map.txt", "w+")
+    f = open(geo_file, "w+")
+    f2 = open(geo_member_file, "w+")
     f.write('"hjid","sid"\n')
     f2.write('"membership_hjid","member_hjid","parent_hjid","parent_sid"\n')
 
