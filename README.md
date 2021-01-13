@@ -28,6 +28,8 @@ The CDS file is huge, and while it is possible to write some SAX to run through 
 - Trim it at the nodes noted above (inclusive) + add the surrounding root nodes etc.
 - Run the Python against the resulting file, which will be closer to 5Mb in size and therefore manageable in the more standard way, using lxml with no SAX components.
 
+`python3 parse.py`
+
 ## What it does
 
 - Runs through every instance of GeographicalArea tag

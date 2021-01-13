@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 import os
 import sys
 import csv
-from geographical_area import GeographicalArea
+from classes.geographical_area import GeographicalArea
 
 
 def parseXML(xmlFile):
@@ -17,7 +17,7 @@ def parseXML(xmlFile):
     f = open(geo_file, "w+")
     f2 = open(geo_member_file, "w+")
     f.write('"geographical_area_hjid","geographical_area_sid"\n')
-    f2.write('"geographical_area_membership_hjid","geographical_area_hjid","geographical_area_sid","geographical_area_group_hjid","geographical_area_group_sid"\n')
+    f2.write('"geographical_area_membership_hjid","geographical_area_hjid","geographical_area_sid","geographical_area_group_hjid","geographical_area_group_sid","validity_start_date"\n')
 
     # Get the hjids for the geographical areas
     for geo in root.findall('.//GeographicalArea'):
@@ -38,9 +38,7 @@ def parseXML(xmlFile):
                 print(f'Column names are {", ".join(row)}')
                 line_count += 1
             else:
-                ga = GeographicalArea()
-                ga.hjid = row[0]
-                ga.sid = row[1]
+                ga = GeographicalArea(row[0], row[1])
                 geographical_areas.append(ga)
                 line_count += 1
         print(f'Processed {line_count} lines.')
@@ -58,18 +56,19 @@ def parseXML(xmlFile):
         for member in geo.findall('geographicalAreaMembership'):
             geographical_area_membership_hjid = member.find("hjid").text
             geographical_area_hjid = member.find("geographicalAreaGroupSid").text
+            validityStartDate = member.find("validityStartDate").text
             # On second pass, do not (rewrite) the geo data, but look up the hjid in the previously written CSV
             geographical_area_sid = "NOT FOUND"
             for ga in geographical_areas:
-                if geographical_area_hjid == ga.hjid:
-                    geographical_area_sid = ga.sid
+                if geographical_area_hjid == ga.geographical_area_hjid:
+                    geographical_area_sid = ga.geographical_area_sid
 
-            f2.write(str(geographical_area_membership_hjid) + "," + str(geographical_area_hjid) + "," + str(geographical_area_sid) + "," + str(hjid)  + "," + str(sid) + "\n")
+            f2.write(str(geographical_area_membership_hjid) + "," + str(geographical_area_hjid) + "," + str(geographical_area_sid) + "," + str(hjid) + "," + str(sid) + "," + validityStartDate + "\n")
 
     # Close the files
     f2.close()
 
 if __name__ == "__main__":
-    filename = "cds_partsab.xml"
+    filename = "geo_2021.xml"
     filename = os.path.join("import", filename)
     parseXML(filename)
